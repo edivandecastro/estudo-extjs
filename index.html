@@ -13,8 +13,43 @@
 <body></body>
 <script type="text/javascript">
 
-  Ext.onReady(function() {
+  Ext.define('MyApp.view.layouts.Anchor', {
+    extend: 'Ext.panel.Panel',
+    alias: 'widget.anchor_layout',
 
+    title: 'Anchor Parent',
+    layout: {
+      type: 'anchor'
+    },
+
+    defaults: {
+      margin: 10,
+      shadow: true,
+      border: 1
+    },
+
+    items: [{
+      xtype: 'panel',
+      title: 'panel 1 - 90% width',
+      anchor: '90%', //aplica 90% de largura do container pai - Anchor Parent
+      height: 60
+    }, {
+      xtype: 'panel',
+      title: 'panel 2 - 75% width',
+      anchor: '75%', //aplica 75% de largura do container pai - Anchor Parent
+      height: 60
+    }, {
+      xtype: 'panel',
+      title: 'panel 3 - 35% width',
+      anchor: '35%', //aplica 35% de largura do container pai - Anchor Parent
+      height: 100
+    }],
+
+    renderTo: Ext.getBody()
+  });
+
+  Ext.onReady(function() {
+    Ext.create('widget.anchor_layout');
   });
 </script>
 </html>
