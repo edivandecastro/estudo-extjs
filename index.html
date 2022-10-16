@@ -13,8 +13,45 @@
 <body></body>
 <script type="text/javascript">
 
-  Ext.onReady(function() {
+  Ext.define('MyApp.view.layouts.Absolute', {
+    extend: 'Ext.Panel',
+    alias: 'widget.absolute_layout',
 
+    title: 'Exemplo Absolute Layout',
+    layout: {
+      type: 'anchor',
+    },
+    height: 600,
+
+    defaults: { // config default para os items do container
+      margin: 10,
+      shadow: true,
+      border: 1,
+      height: 100,
+    },
+
+    items: [{
+      xtype: 'panel',
+      title: 'Panel 1 - x: 100, y: 100',
+      x: 100,
+      y: 100
+    }, {
+      xtype: 'panel',
+      title: 'Panel 2 - x: 150, y: 150',
+      x: 150,
+      y: 150
+    }, {
+      xtype: 'panel',
+      title: 'Panel 3 - x: 200, y: 200',
+      x: 200,
+      y: 200
+    }],
+
+    renderTo: Ext.getBody()
+  });
+
+  Ext.onReady(function() {
+    Ext.create('widget.absolute_layout')
   });
 </script>
 </html>
