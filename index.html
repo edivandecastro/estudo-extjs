@@ -13,8 +13,43 @@
 <body></body>
 <script type="text/javascript">
 
-  Ext.onReady(function() {
+  Ext.define('Funcionario', {
+    extend: 'Ext.data.Model',
 
+    fields: [
+      { name: 'nome' }, //type: auto
+      { name: 'idade',      type: 'int' },
+      { name: 'salario',    type: 'float' },
+      { name: 'ativo',      type: 'boolean' },
+      { name: 'nascimento', type: 'date', dateFormat: 'd/m/Y' },
+      { name: 'usuario',    type: 'string' },
+      { name: 'email',      type: 'string', convert: function(value, record) {
+        return record.get('usuario') + '@email.com';
+      } },
+    ],
+
+    changeName: function() {
+      let oldName = this.get('nome');
+      let newName = oldName + ", The Barbarian";
+
+      this.set('nome', newName);
+    }
+  })
+
+  Ext.onReady(function() {
+    let funcionario = Ext.create('Funcionario', {
+      nome: 'Edivan de Castro',
+      idade: 36,
+      salario: 14000,
+      ativo: true,
+      nascimento: '03/04/1986',
+      usuario: 'edivan'
+    });
+
+    console.log(funcionario.get('nome'));
+    funcionario.set('idade',28);
+    funcionario.changeName();
+    console.log(funcionario);
   });
 </script>
 </html>
