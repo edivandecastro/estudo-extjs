@@ -12,9 +12,53 @@
 </head>
 <body></body>
 <script type="text/javascript">
+  Ext.define('Funcionario', {
+    extend: 'Ext.data.Model',
+
+    fields: [
+      { name: 'nome' }, //type: auto
+      { name: 'idade',      type: 'int' },
+      { name: 'salario',    type: 'float' },
+      { name: 'ativo',      type: 'boolean' },
+      { name: 'nascimento', type: 'date', dateFormat: 'd/m/Y' },
+      { name: 'usuario',    type: 'string' },
+      { name: 'senha',      type: 'string' },
+      { name: 'email',      type: 'string', convert: function(value, record) {
+        return record.get('usuario') + '@email.com';
+      } },
+      { name: 'genero', type: 'string' },
+    ],
+
+    validators: [
+      { type: 'presence', field: 'nome' },
+      { type: 'presence', field: 'usuario' },
+      { type: 'presence', field: 'idade' },
+      { type: 'length',   field: 'senha', min: 6, max: 12 },
+      { type: 'format',   field: 'nome', matcher: /([a-z]+)/},
+      { type: 'inclusion', field: 'genero', list: ['F', 'M'] },
+      { type: 'exclusion', field: 'idade', list: [0] },
+    ],
+
+    changeName: function() {
+      let oldName = this.get('nome');
+      let newName = oldName + ", The Barbarian";
+
+      this.set('nome', newName);
+    }
+  })
 
   Ext.onReady(function() {
+    let funcionario = Ext.create('Funcionario', {
+      salario: 14000,
+      ativo: true,
+      nascimento: '03/04/1986',
+      nome: 12,
+    });
 
+    let errors = funcionario.validate();
+    console.log(errors.isValid());
+    console.log(errors.items); // mostrar todos os errors
+    console.log(errors.getByField('senha')); // pega o erro de um campo
   });
 </script>
 </html>
