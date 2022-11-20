@@ -13,7 +13,42 @@
 <body></body>
 <script type="text/javascript">
 
+  Ext.define('Contato', {
+    extend: 'Ext.data.Model',
+
+    fields: [
+      { name: 'id',    type: 'int' },
+      { name: 'nome',  type: 'string' },
+      { name: 'email', type: 'string' },
+    ],
+
+    proxy: {
+      type: 'rest',
+      url: 'https://snapcode.proxy.beeceptor.com/extjs/contatos',
+      format: 'json'
+    }
+  });
+
   Ext.onReady(function() {
+
+    var contato = Ext.create('Contato', {
+      nome: 'Edivan',
+      email: 'edivandecastro@gmail.com'
+    });
+
+    // console.log(contato.save());
+
+    Contato.load(1, {
+      success: function(contato) {
+        console.log('O nome do contato é: ' + contato.get('nome'));
+
+        contato.set('nome', 'Edivan de Castro');
+
+        contato.save();
+
+        contato.destroy();
+      }
+    })
 
   });
 </script>
