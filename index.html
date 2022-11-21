@@ -12,9 +12,109 @@
 </head>
 <body></body>
 <script type="text/javascript">
+  // Exemplo JSON
+  // {
+  //   "id":1,
+  //   "nome":"Edivan",
+  //   "sobrenome":"de Castro",
+  //   "email":"edivandecastro@gmail.com",
+  //   "telefones": [
+  //     {
+  //       "id":     1,
+  //       "ddd":    85,
+  //       "numero": "98333-1111"
+  //     },
+  //     {
+  //       "id":     2,
+  //       "ddd":    85,
+  //       "numero": "98686-1010"
+  //     }
+  //   ],
+  //   "endereco": {
+  //     "id": 1,
+  //     "logradouro": "Av 25 de Dezembro",
+  //     "numero": "1412",
+  //     "complemento":  "Casa A"
+  //   }
+  // }
 
   Ext.onReady(function() {
 
+    Ext.define('Telefone', {
+      extend: 'Ext.data.Model',
+
+      fields: [
+        { name: 'id',        type: 'int' },
+        { name: 'ddd',       type: 'string' },
+        { name: 'numero',    type: 'string' },
+        { name: 'pessoa_id', type: 'int' },
+      ],
+
+      proxy: {
+        type: 'rest',
+        url: 'https://snapcode.proxy.beeceptor.com/extjs/telefone',
+        format: 'json'
+      },
+
+    });
+
+    Ext.define('Pessoa', {
+      extend: 'Ext.data.Model',
+
+      fields: [
+        { name: 'id',        type: 'int' },
+        { name: 'nome',      type: 'string' },
+        { name: 'sobrenome', type: 'string' },
+      ],
+
+      proxy: {
+        type: 'rest',
+        url: 'https://snapcode.proxy.beeceptor.com/extjs/pessoa',
+        format: 'json'
+      },
+
+      hasMany: { model: 'Telefone' },
+      belongsTo: { model: 'Endereco' },
+    });
+
+    Ext.define('Endereco', {
+      extend: 'Ext.data.Model',
+
+      fields: [
+        { name: 'id',          type: 'int' },
+        { name: 'logradouro',  type: 'string' },
+        { name: 'numero',      type: 'string' },
+        { name: 'complemento', type: 'string' },
+        { name: 'pessoa_id',   type: 'int' },
+      ],
+
+      proxy: {
+        type: 'rest',
+        url: 'https://snapcode.proxy.beeceptor.com/extjs/endereco',
+        format: 'json'
+      }
+    });
+
+    Ext.onReady(function() {
+      Pessoa.load(1, {
+        success: function(pessoa) {
+
+          let telefones = pessoa.telefones();
+
+          telefones.each(function(tel) {
+
+            let logradouro = pessoa.getEndereco().get('logradouro')
+            let numero = pessoa.getEndereco().get('numero')
+            let endereco =  logradouro + ', N ' + numero
+
+            console.log('Nome: ' + tel.getPessoa().get('nome'));
+            console.log('Telefone: ' + tel.get('ddd') + ' ' + tel.get('numero'));
+            console.log('Endereço: ' + endereco);
+            console.log('======================================');
+          });
+        }
+      });
+    });
   });
 </script>
 </html>
